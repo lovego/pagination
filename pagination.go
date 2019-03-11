@@ -19,7 +19,7 @@ func New(page, size string, maxPageSize int64) *Pagination {
 	}
 
 	pageSize, _ := strconv.ParseInt(size, 10, 64)
-	if pageSize <= 0 || pageSize > maxPageSize {
+	if pageSize <= 0 || pageSize > maxPageSize && maxPageSize > 0 {
 		pageSize = maxPageSize
 	}
 
