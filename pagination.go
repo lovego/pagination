@@ -9,7 +9,7 @@ type Pagination struct {
 	TotalSize   int64 `json:"totalSize"`
 	TotalPage   int64 `json:"totalPage"`
 	currentPage int64
-	pageSize    int64 `json:"pageSize"`
+	pageSize    int64
 }
 
 func New(page, size string, maxPageSize int64) *Pagination {

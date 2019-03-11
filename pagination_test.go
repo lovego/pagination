@@ -14,7 +14,7 @@ func ExamplePagination() {
 	// &{TotalSize:82 TotalPage:5 currentPage:3 pageSize:20}
 }
 
-func ExamplePagination_2() {
+func ExamplePagination_invalidParams() {
 	pagination := New("", "100", 50)
 	fmt.Println(pagination.SQL())
 	pagination.Scan(int64(82))
