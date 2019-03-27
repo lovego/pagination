@@ -18,15 +18,15 @@ type Querier interface {
 	Query(data interface{}, sql string, args ...interface{}) error
 }
 
-func NewFromQuery(query url.Values, maxPageSize int64) *Pagination {
-	return New(query.Get("page"), query.Get("pageSize"), maxPageSize)
-}
-
 func New(page, size string, maxPageSize int64) *Pagination {
 	currentPage, _ := strconv.ParseInt(page, 10, 64)
 	pageSize, _ := strconv.ParseInt(size, 10, 64)
 
 	return NewFromInt64(currentPage, pageSize, maxPageSize)
+}
+
+func NewFromQuery(query url.Values, maxPageSize int64) *Pagination {
+	return New(query.Get("page"), query.Get("pageSize"), maxPageSize)
 }
 
 func NewFromInt64(page, size, maxPageSize int64) *Pagination {
