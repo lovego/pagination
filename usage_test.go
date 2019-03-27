@@ -46,7 +46,7 @@ func List2(page, size string) (*Result, error) {
 		return nil, errs.Trace(err)
 	}
 
-	if len(result.Rows) < int(result.PageSize) {
+	if result.CurrentPage == 1 && len(result.Rows) < int(result.PageSize) {
 		result.SetTotalSize(len(result.Rows))
 	} else {
 		if err := db.Query(result, "SELECT count(*) "+mainSql); err != nil {

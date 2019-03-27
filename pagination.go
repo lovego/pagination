@@ -10,7 +10,7 @@ import (
 type Pagination struct {
 	TotalSize   int64 `json:"totalSize"`
 	TotalPage   int64 `json:"totalPage"`
-	currentPage int64
+	CurrentPage int64 `json:"-"`
 	PageSize    int64 `json:"-"`
 }
 type Querier interface {
@@ -28,20 +28,23 @@ func NewFromInt64(page, size, maxPageSize int64) *Pagination {
 	if page <= 0 {
 		page = 1
 	}
-	if size <= 0 || size > maxPageSize && maxPageSize > 0 {
+	if maxPageSize <= 0 {
+		maxPageSize = 10
+	}
+	if size <= 0 || size > maxPageSize {
 		size = maxPageSize
 	}
-	return &Pagination{currentPage: page, PageSize: size}
+	return &Pagination{CurrentPage: page, PageSize: size}
 }
 
 func (p *Pagination) SQL() string {
-	return fmt.Sprintf("LIMIT %d OFFSET %d", p.PageSize, (p.currentPage-1)*p.PageSize)
+	return fmt.Sprintf("LIMIT %d OFFSET %d", p.PageSize, (p.CurrentPage-1)*p.PageSize)
 }
 
 func (p *Pagination) SetupTotalSize(
 	firstPageSize int, querier Querier, sql string, args ...interface{},
 ) error {
-	if firstPageSize < int(p.PageSize) {
+	if p.CurrentPage == 1 && firstPageSize < int(p.PageSize) {
 		p.SetTotalSize(firstPageSize)
 		return nil
 	}
