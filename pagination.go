@@ -14,16 +14,19 @@ type Pagination struct {
 
 func New(page, size string, maxPageSize int64) *Pagination {
 	currentPage, _ := strconv.ParseInt(page, 10, 64)
-	if currentPage <= 0 {
-		currentPage = 1
-	}
-
 	pageSize, _ := strconv.ParseInt(size, 10, 64)
-	if pageSize <= 0 || pageSize > maxPageSize && maxPageSize > 0 {
-		pageSize = maxPageSize
-	}
 
-	return &Pagination{currentPage: currentPage, pageSize: pageSize}
+	return NewFromInt64(currentPage, pageSize, maxPageSize)
+}
+
+func NewFromInt64(page, size, maxPageSize int64) *Pagination {
+	if page <= 0 {
+		page = 1
+	}
+	if size <= 0 || size > maxPageSize && maxPageSize > 0 {
+		size = maxPageSize
+	}
+	return &Pagination{currentPage: page, pageSize: size}
 }
 
 func (p *Pagination) SQL() string {
