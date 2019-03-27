@@ -2,6 +2,7 @@ package pagination
 
 import (
 	"fmt"
+	"net/url"
 	"strconv"
 
 	"github.com/lovego/errs"
@@ -15,6 +16,10 @@ type Pagination struct {
 }
 type Querier interface {
 	Query(data interface{}, sql string, args ...interface{}) error
+}
+
+func NewFromQuery(query url.Values, maxPageSize int64) *Pagination {
+	return New(query.Get("page"), query.Get("pageSize"), maxPageSize)
 }
 
 func New(page, size string, maxPageSize int64) *Pagination {
