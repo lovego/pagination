@@ -11,7 +11,7 @@ func ExamplePagination() {
 
 	// Output:
 	// LIMIT 20 OFFSET 40
-	// &{TotalSize:82 TotalPage:5 currentPage:3 pageSize:20}
+	// &{TotalSize:82 TotalPage:5 currentPage:3 PageSize:20}
 }
 
 func ExamplePagination_invalidParams() {
@@ -22,5 +22,5 @@ func ExamplePagination_invalidParams() {
 
 	// Output:
 	// LIMIT 50 OFFSET 0
-	// &{TotalSize:82 TotalPage:2 currentPage:1 pageSize:50}
+	// &{TotalSize:82 TotalPage:2 currentPage:1 PageSize:50}
 }
