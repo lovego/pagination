@@ -59,6 +59,23 @@ func (p *Pagination) SetupTotalSize(
 	return nil
 }
 
+func (p *Pagination) SetupTotalSizeFunc(
+	firstPageSize int, querier Querier, sqlFunc func() (string, error), args ...interface{},
+) error {
+	if p.CurrentPage == 1 && firstPageSize < int(p.PageSize) {
+		p.SetTotalSize(firstPageSize)
+		return nil
+	}
+	sql, err := sqlFunc()
+	if err != nil {
+		return err
+	}
+	if err := querier.Query(p, sql, args...); err != nil {
+		return errs.Trace(err)
+	}
+	return nil
+}
+
 // we implemented sql.Scanner, so just use rows.Scan(pagination).
 func (p *Pagination) Scan(src interface{}) error {
 	switch totalSize := src.(type) {
