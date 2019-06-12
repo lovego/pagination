@@ -18,26 +18,25 @@ type Querier interface {
 	Query(data interface{}, sql string, args ...interface{}) error
 }
 
-func New(page, size string, maxPageSize int64) *Pagination {
+// NewFromQuery returns a pagination from url.Values
+func NewFromQuery(query url.Values, options ...Option) *Pagination {
+	return New(query.Get("page"), query.Get("pageSize"), options...)
+}
+
+// New returns a Pagination from page, size in string type
+func New(page, size string, options ...Option) *Pagination {
 	currentPage, _ := strconv.ParseInt(page, 10, 64)
 	pageSize, _ := strconv.ParseInt(size, 10, 64)
 
-	return NewFromInt64(currentPage, pageSize, maxPageSize)
+	return NewFromInt64(currentPage, pageSize, options...)
 }
 
-func NewFromQuery(query url.Values, maxPageSize int64) *Pagination {
-	return New(query.Get("page"), query.Get("pageSize"), maxPageSize)
-}
-
-func NewFromInt64(page, size, maxPageSize int64) *Pagination {
+func NewFromInt64(page, size int64, options ...Option) *Pagination {
 	if page <= 0 {
 		page = 1
 	}
-	if maxPageSize <= 0 {
-		maxPageSize = 10
-	}
-	if size <= 0 || size > maxPageSize {
-		size = maxPageSize
+	if size <= 0 || size > maxPageSizeFrom(options) {
+		size = defaultPageSizeFrom(options)
 	}
 	return &Pagination{CurrentPage: page, PageSize: size}
 }

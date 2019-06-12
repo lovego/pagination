@@ -3,7 +3,7 @@ package pagination
 import "fmt"
 
 func ExamplePagination() {
-	pagination := New("3", "20", 50)
+	pagination := New("3", "20")
 	fmt.Println(pagination.SQL())
 	// we implemented sql.Scanner
 	pagination.Scan(int64(82))
@@ -15,12 +15,12 @@ func ExamplePagination() {
 }
 
 func ExamplePagination_invalidParams() {
-	pagination := New("", "100", 50)
+	pagination := New("", "100", Option{DefaultPageSize: 10, MaxPageSize: 50})
 	fmt.Println(pagination.SQL())
 	pagination.Scan(int64(82))
 	fmt.Printf("%+v\n", pagination)
 
 	// Output:
-	// LIMIT 50 OFFSET 0
-	// &{TotalSize:82 TotalPage:2 CurrentPage:1 PageSize:50}
+	// LIMIT 10 OFFSET 0
+	// &{TotalSize:82 TotalPage:9 CurrentPage:1 PageSize:10}
 }

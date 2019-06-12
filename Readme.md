@@ -34,7 +34,7 @@ type Row struct {
 }
 
 func List(page, size string) (*Result, error) {
-	result := Result{Pagination: pagination.New(page, size, 20)}
+	result := Result{Pagination: pagination.New(page, size)}
 
 	var mainSql = fmt.Sprintf("FROM users WHERE type = %d", 1)
 	if err := db.Query(&result.Rows, fmt.Sprintf(
@@ -50,7 +50,9 @@ func List(page, size string) (*Result, error) {
 }
 
 func List2(page, size string) (*Result, error) {
-	result := Result{Pagination: pagination.New(page, size, 20)}
+	result := Result{
+		Pagination: pagination.New(page, size, pagination.Option{DefaultPageSize: 10, MaxPageSize: 100}),
+	}
 
 	var mainSql = fmt.Sprintf("FROM users WHERE type = %d", 1)
 	if err := db.Query(&result.Rows, fmt.Sprintf(
