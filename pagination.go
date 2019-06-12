@@ -75,7 +75,7 @@ func (p *Pagination) SetupTotalSizeFunc(
 	return nil
 }
 
-// we implemented sql.Scanner, so just use rows.Scan(pagination).
+// Scan implemented sql.Scanner, so just use rows.Scan(pagination).
 func (p *Pagination) Scan(src interface{}) error {
 	switch totalSize := src.(type) {
 	case int64:
@@ -95,7 +95,7 @@ func (p *Pagination) SetTotalSize(totalSize int) {
 func (p *Pagination) CalcTotalPage() {
 	var totalPage = p.TotalSize / p.PageSize
 	if p.TotalSize%p.PageSize > 0 {
-		totalPage += 1
+		totalPage++
 	}
 	p.TotalPage = totalPage
 }
