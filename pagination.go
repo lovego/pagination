@@ -83,7 +83,7 @@ func (p *Pagination) Scan(src interface{}) error {
 		p.CalcTotalPage()
 		return nil
 	default:
-		return fmt.Errorf("bsql: cannot assign %T(%v) to int64", src, src)
+		return fmt.Errorf("pagination: cannot assign %T(%v) to int64", src, src)
 	}
 }
 
