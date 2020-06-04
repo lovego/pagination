@@ -42,7 +42,11 @@ func NewFromInt64(page, size int64, options ...Option) *Pagination {
 }
 
 func (p *Pagination) SQL() string {
-	return fmt.Sprintf("LIMIT %d OFFSET %d", p.PageSize, (p.CurrentPage-1)*p.PageSize)
+	return fmt.Sprintf("LIMIT %d OFFSET %d", p.PageSize, p.Offset())
+}
+
+func (p *Pagination) Offset() int64 {
+	return (p.CurrentPage - 1) * p.PageSize
 }
 
 func (p *Pagination) SetupTotalSize(
