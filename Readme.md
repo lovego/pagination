@@ -1,10 +1,10 @@
 # pagination
 pagination util for golang.
 
-[![Build Status](https://travis-ci.org/lovego/pagination.svg?branch=master)](https://travis-ci.org/lovego/pagination)
-[![Coverage Status](https://img.shields.io/coveralls/github/lovego/pagination/master.svg)](https://coveralls.io/github/lovego/pagination?branch=master)
+[![Build Status](https://github.com/lovego/pagination/actions/workflows/go.yml/badge.svg)](https://github.com/lovego/pagination/actions/workflows/go.yml)
+[![Coverage Status](https://coveralls.io/repos/github/lovego/pagination/badge.svg?branch=master&1)](https://coveralls.io/github/lovego/pagination)
 [![Go Report Card](https://goreportcard.com/badge/github.com/lovego/pagination)](https://goreportcard.com/report/github.com/lovego/pagination)
-[![GoDoc](https://godoc.org/github.com/lovego/pagination?status.svg)](https://godoc.org/github.com/lovego/pagination)
+[![Documentation](https://pkg.go.dev/badge/github.com/lovego/pagination)](https://pkg.go.dev/github.com/lovego/pagination@v0.0.1)
 
 ## Install
 `$ go get github.com/lovego/pagination`

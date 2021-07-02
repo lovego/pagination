@@ -1,6 +1,7 @@
 package pagination
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 )
@@ -43,6 +44,13 @@ func (q testQuerier) Query(data interface{}, querySql string, args ...interface{
 	return nil
 }
 
+func (q testQuerier) QueryCtx(ctx context.Context, opName string, data interface{}, querySql string, args ...interface{}) error {
+	if scanner, ok := data.(sql.Scanner); ok {
+		scanner.Scan(int64(150))
+	}
+	return nil
+}
+
 func ExamplePagination_SetupTotalSize() {
 	p := NewFromInt64(1, 100)
 	fmt.Println(p.SetupTotalSize(50, nil, "SELECT count(*)"))
@@ -50,6 +58,21 @@ func ExamplePagination_SetupTotalSize() {
 
 	p = NewFromInt64(2, 100)
 	fmt.Println(p.SetupTotalSize(50, testQuerier{}, "SELECT count(*)"))
+	fmt.Printf("%+v\n", p)
+	// Output:
+	// <nil>
+	// &{TotalSize:50 TotalPage:1 CurrentPage:1 PageSize:100}
+	// <nil>
+	// &{TotalSize:150 TotalPage:2 CurrentPage:2 PageSize:100}
+}
+
+func ExamplePagination_SetupTotalSizeCtx() {
+	p := NewFromInt64(1, 100)
+	fmt.Println(p.SetupTotalSizeCtx(context.Background(), `SetupTotalSizeCtx1`, 50, nil, "SELECT count(*)"))
+	fmt.Printf("%+v\n", p)
+
+	p = NewFromInt64(2, 100)
+	fmt.Println(p.SetupTotalSizeCtx(context.Background(), `SetupTotalSizeCtx2`, 50, testQuerier{}, "SELECT count(*)"))
 	fmt.Printf("%+v\n", p)
 	// Output:
 	// <nil>

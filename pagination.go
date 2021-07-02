@@ -1,6 +1,7 @@
 package pagination
 
 import (
+	"context"
 	"fmt"
 	"net/url"
 	"strconv"
@@ -16,6 +17,7 @@ type Pagination struct {
 }
 type Querier interface {
 	Query(data interface{}, sql string, args ...interface{}) error
+	QueryCtx(ctx context.Context, opName string, data interface{}, sql string, args ...interface{}) error
 }
 
 // NewFromQuery returns a pagination from url.Values
@@ -57,6 +59,19 @@ func (p *Pagination) SetupTotalSize(
 		return nil
 	}
 	if err := querier.Query(p, sql, args...); err != nil {
+		return errs.Trace(err)
+	}
+	return nil
+}
+
+func (p *Pagination) SetupTotalSizeCtx(
+	ctx context.Context, opName string, firstPageSize int, querier Querier, sql string, args ...interface{},
+) error {
+	if p.CurrentPage == 1 && firstPageSize < int(p.PageSize) {
+		p.SetTotalSize(firstPageSize)
+		return nil
+	}
+	if err := querier.QueryCtx(ctx, opName, p, sql, args...); err != nil {
 		return errs.Trace(err)
 	}
 	return nil
