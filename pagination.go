@@ -9,12 +9,22 @@ import (
 	"github.com/lovego/errs"
 )
 
+type Page struct {
+	Page     int64 `json:"page" c:"页码"`
+	PageSize int64 `json:"pageSize" c:"页宽"`
+}
+
+func (p Page) Pagination(options ...Option) *Pagination {
+	return NewFromInt64(p.Page, p.PageSize, options...)
+}
+
 type Pagination struct {
 	TotalSize   int64 `json:"totalSize"`
 	TotalPage   int64 `json:"totalPage"`
 	CurrentPage int64 `json:"-"`
 	PageSize    int64 `json:"-"`
 }
+
 type Querier interface {
 	Query(data interface{}, sql string, args ...interface{}) error
 	QueryCtx(ctx context.Context, opName string, data interface{}, sql string, args ...interface{}) error
