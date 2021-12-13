@@ -9,12 +9,12 @@ import (
 	"github.com/lovego/errs"
 )
 
-type Page struct {
+type Paginator struct {
 	Page     int64 `json:"page" c:"页码"`
 	PageSize int64 `json:"pageSize" c:"页宽"`
 }
 
-func (p Page) Pagination(options ...Option) *Pagination {
+func (p Paginator) Pagination(options ...Option) *Pagination {
 	return NewFromInt64(p.Page, p.PageSize, options...)
 }
 
